@@ -22,3 +22,36 @@ select,
 textarea {
     max-width: 280px;
 }
+.panel
+{
+    padding:0px;
+    border-right:ridge;
+    border-color:cadetblue;
+    border-left:none;
+    border-bottom:none;
+    border-top:none;
+    height:100%;
+}
+.panel-heading{
+    background-color:cadetblue;
+    text-align:center;
+    color:white;
+    text-decoration:wavy;
+}
+.panel-heading h1{
+    text-shadow: 2px 2px #ff0000;
+}
+.container-fluid{
+    padding-left:0px;
+    height:100%;
+}
+
+.customers {
+    margin-bottom:20px;
+    background-color:khaki;
+    color:black;
+    border:none;
+}
+.customers:hover{
+    background-color:gainsboro!important;
+}

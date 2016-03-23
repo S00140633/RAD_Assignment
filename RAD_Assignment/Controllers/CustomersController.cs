@@ -6,27 +6,34 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using RAD_Assignment.Models;
+using RAD_Assignment.DAL;
 
 namespace RAD_Assignment.Controllers
 {
     public class CustomersController : ApiController
     {
-        private ActivitiesDB db = new ActivitiesDB();
+        private IRepository<Customer> repo;
+
+        public CustomersController(IRepository<Customer> repo)
+        {
+            this.repo = repo;
+        }
 
         // GET: api/Customers
         public IQueryable<Customer> GetCustomers()
         {
-            return db.Customers;
+            return repo.Get();
         }
 
         // GET: api/Customers/5
         [ResponseType(typeof(Customer))]
         public IHttpActionResult GetCustomer(int id)
         {
-            Customer customer = db.Customers.Find(id);
+            Customer customer = repo.GetByID(id);
             if (customer == null)
             {
                 return NotFound();
@@ -37,7 +44,7 @@ namespace RAD_Assignment.Controllers
 
         // PUT: api/Customers/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutCustomer(int id, Customer customer)
+        public async Task<IHttpActionResult> PutCustomer(int id, Customer customer)
         {
             if (!ModelState.IsValid)
             {
@@ -49,11 +56,11 @@ namespace RAD_Assignment.Controllers
                 return BadRequest();
             }
 
-            db.Entry(customer).State = EntityState.Modified;
+            repo.Put(customer);
 
             try
             {
-                db.SaveChanges();
+                await repo.Save();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -72,31 +79,31 @@ namespace RAD_Assignment.Controllers
 
         // POST: api/Customers
         [ResponseType(typeof(Customer))]
-        public IHttpActionResult PostCustomer(Customer customer)
+        public async Task<IHttpActionResult> PostCustomer(Customer customer)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Customers.Add(customer);
-            db.SaveChanges();
+            repo.Post(customer);
+            await repo.Save();
 
             return CreatedAtRoute("DefaultApi", new { id = customer.Id }, customer);
         }
 
         // DELETE: api/Customers/5
         [ResponseType(typeof(Customer))]
-        public IHttpActionResult DeleteCustomer(int id)
+        public async Task<IHttpActionResult> DeleteCustomer(int id)
         {
-            Customer customer = db.Customers.Find(id);
+            Customer customer = repo.GetByID(id);
             if (customer == null)
             {
                 return NotFound();
             }
 
-            db.Customers.Remove(customer);
-            db.SaveChanges();
+            repo.Delete(customer);
+            await repo.Save();
 
             return Ok(customer);
         }
@@ -105,14 +112,14 @@ namespace RAD_Assignment.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                repo.Dispose();
             }
             base.Dispose(disposing);
         }
 
         private bool CustomerExists(int id)
         {
-            return db.Customers.Count(e => e.Id == id) > 0;
+            return repo.ItemExists(id);
         }
     }
 }
