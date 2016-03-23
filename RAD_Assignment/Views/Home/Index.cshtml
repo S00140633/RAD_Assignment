@@ -1,9 +1,11 @@
 ﻿<div class="main">
-    <div class="col-md-3 panel">
+    @*------Customers-------*@
+    <div class="col-md-3 allCustomers">
         <div class="panel-heading"><h1>Customers</h1></div>
+        <button class="btn btn-info col-md-offset-3 createbtn" data-bind="click: CreateCustomer">Create New Customer</button>
         <div class="panel-body" data-bind="template: {  foreach:customers }">
-            <div href="#" class="btn btn-sq-lg btn-primary col-md-10 col-md-offset-1 customers">
-                <h2><span class="details" data-bind="text:FirstName"></span> <span data-bind="text:LastName" class="details"></span></h2>
+            <div class="btn btn-sq-lg btn-primary col-md-10 col-md-offset-1 customers" data-bind="click:$parent.CustomerBookings">
+                <h3><span class="details" data-bind="text:FirstName"></span> <span data-bind="text:LastName" class="details"></span></h3>
                 <strong>DOB:</strong><span data-bind="text: moment(DOB).format('DD-MMMM-YYYY')"></span>
                 <hr />
                 <div>
@@ -12,6 +14,78 @@
                 </div>
             </div>
         </div>
+
+        @*------------Create Customer------------*@
+        <form id="CreateCustomer" hidden="hidden">
+            <div data-bind="with: newCustomer">
+                <div class="col-md-10 col-md-offset-1">
+                    <div class="form-group">
+                        <input id="txtName" placeholder="First Name" class="form-control" data-bind="value:FirstName" required>
+                    </div>
+                    <div class="form-group">
+                        <input id="txtDescription" placeholder="Last Name" class="form-control" data-bind="value:LastName" required>
+                    </div>
+                    <div class="form-group">
+                        <div class="has-feedback">
+                            <input type="text" id="datepicker" placeholder="Date of Birth" class="form-control" data-bind="value:DOB" required>
+                            @*<i class="glyphicon glyphicon-calendar input-group-addon"></i>*@
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+        <button class="btn btn-info col-md-offset-3" data-bind="click: CreateNewCustomer" id="crteCust">Create New Customer</button>
+    </div>
+    @*-----------------Bookings Div------------------------*@
+    <div class="col-md-9 bookings">
+        <div class="panel-heading"><h1>Bookings and Acticities</h1><button class="btn btn-lg btn-warning pull-right" id="CreateBooking" style="margin-top:-55px" data-bind="click: CreateBooking">New Booking</button></div>
+        <div class="col-md-12" id="AllBookings" hidden="hidden">
+            <h2><span data-bind="text:CustomerName"></span>'s Booking</h2>
+        </div>
+        @*--------------Create booking------------------*@
+        <div class="col-md-12" id="NewBooking" hidden="hidden">
+            <h2><span>New Booking for</span>  <span data-bind="text:CustomerName"></span></h2>
+            <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    Please Select a Country
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <li><a href="#">New Zealand</a></li>
+                    <li><a href="#">United States</a></li>
+                    <li><a href="#">United Kingdom</a></li>
+                    <li><a href="#">Australia</a></li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <div class="list-group" hidden="hidden">
+                    <a href="#" class="list-group-item active">
+                        List Of Activity Centres
+                    </a>
+                    <div data-bind="template: {  foreach:places }">
+                        <a class="list-group-item" data-bind="click:$parent.CentreActivies"><span data-bind="text:name"></span></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div data-bind="foreach: Activities">
+                    <h3 data-bind="text: name"></h3>
+                    <strong><label>City:</label></strong> <span data-bind="text: city"></span>
+                </div>
+                <div data-bind="foreach: Activities">
+                    <div data-bind="foreach: activities">
+                        <strong><label>Activity Type:</label></strong><span data-bind="text: activity_type_name ? activity_type_name : 'Sorry there is no Activities information'"></span><br/>
+                        <strong><label>Website:</label></strong><span data-bind="text: url"></span>
+
+                        <div class="col-md-12">
+                            <img data-bind="attr: { src: thumbnail ? thumbnail : 'http://weknowyourdreamz.com/images/adventure/adventure-07.jpg' }" class="img-responsive" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 

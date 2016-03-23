@@ -28,6 +28,7 @@ namespace RAD_Assignment
             bundles.Add(new ScriptBundle("~/bundles/Index").Include(
                         "~/Scripts/toastr.js",
                         "~/Scripts/moment.js",
+                        "~/Scripts/jquery-ui-1.11.4.js",
                         "~/ViewModels/CustomersVM.js"
                 ));
 
@@ -35,6 +36,7 @@ namespace RAD_Assignment
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
                       "~/Content/toastr.css",
+                      "~/Content/themes/base/datepicker.css",
                       "~/Content/font-awesome.css"));
         }
     }
