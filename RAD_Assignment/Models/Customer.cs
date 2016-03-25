@@ -31,7 +31,9 @@ namespace RAD_Assignment.Models
 
         public DateTime BookingDate { get; set;}
 
-        public DbGeography Location { get; set; }
+        public float Latitude { get; set; }
+
+        public float Longitude {get; set; }
         public int CustomerId { get; set; }
 
         [ForeignKey("CustomerId")]

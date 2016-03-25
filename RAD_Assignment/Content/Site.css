@@ -1,13 +1,14 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
-    height: 100%;
+﻿html,body {
+    display:block;
+    height:100%;
 }
 
 /* Set padding to keep content from hitting the edges */
-.body-content {
+.container-fluid {
     padding-left: 15px;
-    padding-right: 0px;
+    padding-right: 15px;
+    height: 100%;
+    
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -23,21 +24,19 @@ select,
 textarea {
     max-width: 280px;
 }
+.main
+{
+    display:block;
+    overflow:auto;
+    height:100%;
+}
 
 .allCustomers {
     padding: 0px;
-    padding-bottom: 20px;
-    border-right: solid;
-    border-color: cadetblue;
-    border-left: none;
-    border-bottom: solid;
-    border-top: none;
-    height: 100%;
-    background-color: azure;
 }
 
 .panel-heading {
-    background-color: cadetblue;
+    background-color: #173e43;
     text-align: center;
     color: white;
 }
@@ -66,13 +65,14 @@ textarea {
 
 .customers {
     margin-bottom: 20px;
-    background-color: khaki;
+    background-color: #dddfd4;
     color: black;
-    border: none;
+    border: solid;
+    border-width:thin;
 }
 
     .customers:hover {
-        background-color: burlywood;
+        background-color: white;
         color: black;
     }
 
@@ -80,17 +80,43 @@ textarea {
     margin-top: 10px;
 }
 
-#AllBookings h2, #NewBooking h2 {
+#AllBookings h2, #NewBooking h2, NewBooking h3 {
     text-align: center;
-    color: blue;
+    color:#173e43 ;
 }
-.list-group
+
+.list-group {
+    margin-top: 20px;
+}
+
+.img-responsive {
+    max-height: 250px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+hr {
+    background-color: #173e43;
+    height: 2px;
+}
+#indiviudualbooking
 {
-    margin-top:20px;
+    border:solid;
+    border-color:cadetblue;
+    border-width:thin;
+    margin-bottom:20px;
+    padding:20px;
+    min-height:250px
 }
-.img-responsive
+.map { height:200px; width:500px; }
+.bookings{
+    background-color:#fae596; 
+    min-height:100%;  
+    overflow:auto;
+     display:block;
+}
+#indiviudualbooking
 {
-    max-height:250px;
-    margin-top:10px;
-    margin-bottom:15px
+    background-color:#3fb0ac; 
 }
+

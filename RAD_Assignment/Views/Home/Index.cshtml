@@ -1,4 +1,4 @@
-﻿<div class="main">
+﻿<div class="main row">
     @*------Customers-------*@
     <div class="col-md-3 allCustomers">
         <div class="panel-heading"><h1>Customers</h1></div>
@@ -42,6 +42,20 @@
         <div class="panel-heading"><h1>Bookings and Acticities</h1><button class="btn btn-lg btn-warning pull-right" id="CreateBooking" style="margin-top:-55px" data-bind="click: CreateBooking">New Booking</button></div>
         <div class="col-md-12" id="AllBookings" hidden="hidden">
             <h2><span data-bind="text:CustomerName"></span>'s Booking</h2>
+
+            <div data-bind="foreach: BookingsForCustomer">
+                <div id="indiviudualbooking">
+                    <div class="col-md-4">
+                        <h3 data-bind="text: Activity_Name"></h3>
+                        <label>Country:</label><span data-bind="text:Country"></span><br />
+                        <label>City:</label><span data-bind="text:City"></span><br />
+                        <label>Booking Date:</label><span data-bind="text:moment(BookingDate).format('DD-MMMM-YYYY')"></span><br /><br />
+                        <button class="btn btn-danger" data-bind="click:$parent.DeleteBooking ">Cancel Booking</button>
+                    </div>
+                    <div class="map" data-bind="googlemap: { latitude: Latitude, longitude: Longitude }"></div>
+
+                </div>
+            </div>
         </div>
         @*--------------Create booking------------------*@
         <div class="col-md-12" id="NewBooking" hidden="hidden">
@@ -68,14 +82,22 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div data-bind="foreach: Activities">
-                    <h3 data-bind="text: name"></h3>
-                    <strong><label>City:</label></strong> <span data-bind="text: city"></span>
+            <div id="Activitydetails" class="col-md-6" hidden="hidden">
+                <div class="input-group">
+                    <input type="text" id="datepicker1" placeholder="Please select booking date" class="form-control" required>
+                    <span class="input-group-btn">
+                        <button id="BookNow" class="btn btn-info" disabled="disabled" data-bind="click: BookActivity">Book Now</button>
+                    </span>
                 </div>
+                <div id="NewBooking" data-bind="foreach: Activities">
+                    <h3 data-bind="text: name"></h3>
+                    <strong><label>City:</label></strong> <span data-bind="text: city"></span><br />
+                    <strong><label>Directions:</label></strong> <span data-bind="text: directions ? directions : 'Sorry no directions available'"></span>
+                </div>
+                <hr />
                 <div data-bind="foreach: Activities">
                     <div data-bind="foreach: activities">
-                        <strong><label>Activity Type:</label></strong><span data-bind="text: activity_type_name ? activity_type_name : 'Sorry there is no Activities information'"></span><br/>
+                        <strong><label>Activity Type:</label></strong><span data-bind="text: activity_type_name ? activity_type_name : 'Sorry there is no Activities information'"></span><br />
                         <strong><label>Website:</label></strong><span data-bind="text: url"></span>
 
                         <div class="col-md-12">
@@ -89,7 +111,10 @@
     </div>
 </div>
 
+
 @section scripts
 {
     @Scripts.Render("~/bundles/Index")
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0ZRIjGgtRQXU-ydp8LWrg51Y_9_g0X-Q&libraries=visualization" async defer></script>
 }
