@@ -49,13 +49,19 @@
 
     //displays create customer form
     self.CreateCustomer = function () {
+        //clears form
+        self.newCustomer.FirstName('')
+        self.newCustomer.LastName('')
+        self.newCustomer.DOB('')
         $('.panel-body, .createbtn').hide();
         $('#CreateCustomer, #crteCust').show();
+        $('.EditButtons').hide();
 
     }
 
     //object to stores customer details
     self.newCustomer = {
+        Id:ko.observable(),
         FirstName: ko.observable(),
         LastName: ko.observable(),
         DOB: ko.observable(),
@@ -72,6 +78,7 @@
             self.customers.push(data);// adds new customer to observable array
             $('#CreateCustomer, #crteCust').hide();
             $('.panel-body, .createbtn').show();
+            toastr.success('Customer Created')
         })
     }
     //cancel create customer
@@ -107,6 +114,8 @@
 
     //when user selects country it calls the Trail API and passes it the country as a parameter
     $('.dropdown-menu li').on('click', function () {
+        $('#ajaxloader').show();
+        $('.list-group, #Activitydetails').hide();
         var country = $(this).text();
         self.places.removeAll()
         $.ajax({
@@ -117,12 +126,14 @@
             success: function (data) {
                 $.each(data.places, function (i, v) {
                     self.places.push(v)// add returned data to observable array
-                    $('.list-group').show();
+                    
                     toastr.success('Select an Activity Centre to see activities')
+                    $('.list-group').show();
+                    $('#ajaxloader').hide(500);
                 })
             },
             error: function (err)
-            { toastr.error('Oops! something went wrong. Please try again'); },
+            { toastr.error('Oops! something went wrong. Please try again'); $('#ajaxloader').hide(500); },
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("X-Mashape-Authorization", "HvbD5fjX4JmshhXjwUpYo1S0cLMYp1ao6cQjsnPktNQTP8S1rc"); // Enter here your Mashape key
             }
@@ -229,6 +240,30 @@
         })
     }
 
+    var CustomerId;
+
+    //store customer details for editing
+    self.EditCustomer = function (customer) {
+        CustomerId = customer.Id
+        self.newCustomer.Id(customer.Id)
+        self.newCustomer.FirstName(customer.FirstName);
+        self.newCustomer.LastName(customer.LastName);
+        self.newCustomer.DOB(customer.DOB);
+        $('.panel-body, .createbtn').hide();
+        $('#CreateCustomer, #crteCust, .EditButtons').show();
+        $('.createButtons').hide();
+    }
+
+    //put customer details
+    self.ConfirmEditCustomer = function () {
+        ajaxHelper(customerUri + CustomerId, 'PUT', self.newCustomer).done(function () {
+            self.GetCustomers();
+            toastr.success('Customer Edited')
+            $('#CreateCustomer, #crteCust, #AllBookings, #CreateBooking').hide();
+            $('.panel-body, .createbtn').show();
+        })
+    }
+
     // helps displays multiple google maps with different latitude and longitude
     ko.bindingHandlers.googlemap = {
                 init: function (element, valueAccessor) {
@@ -254,11 +289,30 @@
 
 }
 $(document).ready(function () {
-    toastr.options.preventDuplicates = true;
+    
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-top-center",
+        "preventDuplicates": true,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
     var CVM = new CustomersVM;
 
     //initialises datepickers
-    $("#datepicker").datepicker();
+    $("#datepicker").datepicker({
+        defaultDate: '1/9/1985'
+    });
     $("#datepicker1").datepicker({
         onSelect: function () {
             var empty = false;

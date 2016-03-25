@@ -10,12 +10,12 @@
                 <hr />
                 <div>
                     <button class="btn btn-danger btn-xs" data-bind="click:$parent.showModalDelete" >Delete</button>
-                    <button class="btn btn-info btn-xs">Edit</button>
+                    <button class="btn btn-info btn-xs" data-bind="click:$parent.EditCustomer">Edit</button>
                 </div>
             </div>
         </div>
 
-        @*------------Create Customer------------*@
+        @*------------Create Customer & Edit Customer------------*@
         <form id="CreateCustomer" hidden="hidden">
             <div data-bind="with: newCustomer">
                 <div class="col-md-10 col-md-offset-1">
@@ -35,8 +35,10 @@
                 </div>
             </div>
         </form>
-        <button class="btn btn-info btn-sm col-md-offset-2" data-bind="click: CreateNewCustomer" id="crteCust">Create New Customer</button>
-        <button class="btn btn-sm btn-danger" data-bind="click: CancelCreateCustomer" id="crteCust">Cancel</button>
+        <button class="btn btn-info btn-sm col-md-offset-2 createButtons" data-bind="click: CreateNewCustomer" id="crteCust">Create New Customer</button>
+        <button class="btn btn-sm btn-danger createButtons" data-bind="click: CancelCreateCustomer" id="crteCust">Cancel</button>
+        <button class="btn btn-info btn-sm col-md-offset-2 EditButtons" data-bind="click: ConfirmEditCustomer" id="crteCust" hidden="hidden">Edit Customer</button>
+        <button class="btn btn-sm btn-danger EditButtons" data-bind="click: CancelCreateCustomer" id="crteCust" hidden="hidden">Cancel</button>
     </div>
     @*-----------------Bookings Div------------------------*@
     <div class="col-md-9 bookings">
@@ -151,7 +153,7 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
-<div id="ajaxloader"></div>
+<div id="ajaxloader" hidden="hidden"></div>
 
 @section scripts
 {
